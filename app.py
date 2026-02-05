@@ -1,12 +1,6 @@
 from flask import Flask, render_template, request
 from PyPDF2 import PdfReader
-from openai import OpenAI
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+import json
 
 app = Flask(__name__)
 
@@ -16,53 +10,42 @@ def home():
         resume_file = request.files.get("resume")
         job_description = request.form.get("jd")
 
-        # Extract resume text
+        # 1. Extract resume text from PDF
         reader = PdfReader(resume_file)
         resume_text = ""
         for page in reader.pages:
-            resume_text += page.extract_text()
+            text = page.extract_text()
+            if text:
+                resume_text += text
 
-        # AI prompt
-        prompt = f"""
-You are an ATS (Applicant Tracking System).
-
-Compare the resume and job description below.
-
-Resume:
-{resume_text}
-
-Job Description:
-{job_description}
-
-Return STRICTLY in JSON:
-{{
-  "ats_score": number,
-  "matched_skills": [],
-  "missing_skills": [],
-  "suggestions": []
-}}
-"""
-
-        # Call OpenAI
+        # 2. Mock AI response (final, stable version)
         ai_result = """
-{
-  "ats_score": 82,
-  "matched_skills": ["Python", "Flask", "Machine Learning", "React"],
-  "missing_skills": ["Docker", "Cloud Deployment"],
-  "suggestions": [
-    "Add more measurable project outcomes",
-    "Highlight internships or hands-on ML work"
-  ]
-}
-"""
-
-
-        return f"""
-        <h2>AI Resume Analysis</h2>
-        <pre>{ai_result}</pre>
+        {
+          "ats_score": 82,
+          "matched_skills": ["Python", "Flask", "Machine Learning", "React"],
+          "missing_skills": ["Docker", "Cloud Deployment"],
+          "suggestions": [
+            "Add more measurable project outcomes",
+            "Highlight internships or hands-on ML work"
+          ]
+        }
         """
 
+        # 3. Convert AI JSON string → Python dict
+        analysis = json.loads(ai_result)
+
+        # 4. Send structured data to result page
+        return render_template(
+            "result.html",
+            score=analysis["ats_score"],
+            matched=analysis["matched_skills"],
+            missing=analysis["missing_skills"],
+            suggestions=analysis["suggestions"]
+        )
+
+    # GET request → show landing page
     return render_template("index.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

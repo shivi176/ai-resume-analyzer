@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analysis Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Resume Analysis</h1>
+
+    <div class="score 
+        {% if score >= 75 %}green
+        {% elif score >= 50 %}orange
+        {% else %}red
+        {% endif %}
+    ">
+        {{ score }} / 100
+    </div>
+
+    <h3>Matched Skills</h3>
+    <div class="tags">
+        {% for s in matched %}
+            <span>{{ s }}</span>
+        {% endfor %}
+    </div>
+
+    <h3>Missing Skills</h3>
+    <div class="tags missing">
+        {% for s in missing %}
+            <span>{{ s }}</span>
+        {% endfor %}
+    </div>
+
+    <h3>Suggestions</h3>
+    <ul>
+        {% for tip in suggestions %}
+            <li>{{ tip }}</li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="/" style="text-decoration:none;">
+        <button>Analyze Another Resume</button>
+    </a>
+</div>
+
+</body>
+</html>

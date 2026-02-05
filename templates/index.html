@@ -1,73 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>AI Resume Analyzer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            padding: 40px;
-        }
-
-        .container {
-            max-width: 700px;
-            background: white;
-            padding: 30px;
-            margin: auto;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        textarea, input[type="file"] {
-            width: 100%;
-            margin-top: 8px;
-            margin-bottom: 20px;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        pre {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
 <div class="container">
     <h1>AI Resume Analyzer</h1>
+    <p style="text-align:center;">Check how well your resume matches a job description</p>
 
     <form method="POST" enctype="multipart/form-data">
         <label>Upload Resume (PDF)</label>
         <input type="file" name="resume" required>
 
         <label>Job Description</label>
-        <textarea name="jd" rows="8" required></textarea>
+        <textarea name="jd" rows="7" required></textarea>
 
         <button type="submit">Analyze Resume</button>
     </form>
